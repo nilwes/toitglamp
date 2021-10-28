@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "admin";
-$password = "wintermute";
+$username = "mysqlusername";
+$password = "mysqlpassword";
 $dbname = "THP-Database";
 
 // Create connection
