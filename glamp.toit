@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Toitware ApS. All rights reserved.
+// Copyright (C) 2021 Toitware ApS. All rights reserved.
 
 // Import libraries for HTTP.
 import net
@@ -42,10 +42,10 @@ main:
 
 send_to_server temp hum pres:
   network_interface := net.open
-  host := "nilsflix.ddns.net"
-  socket := network_interface.tcp_connect host 8008
+  host := "ipadress.toyour.lampserver"
+  socket := network_interface.tcp_connect host 80
   connection := http.Connection socket host
   parameters := "Temp=$(%.1f temp)&Hum=$(%.1f hum)&Press=$(%.1f pres)"  // HTTP parameters.
   request := connection.new_request "GET" "/insert.php?$parameters"  // Create an HTTP request.
   request.send
-  print "Submitted URL ---> http://$host:8008/insert.php?$parameters"
+  print "Submitted URL ---> http://$host:80/insert.php?$parameters"
