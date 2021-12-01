@@ -22,6 +22,10 @@ D7pin := gpio.Pin.out 15
 sda := 21 // I2C pins
 scl := 22
 
+// URL and port to your LAMP server
+host := "nilsflix.ddns.net"
+port := 8008
+
 main:
   display.lcd_init RSpin ENpin D4pin D5pin D6pin D7pin 
 
@@ -40,17 +44,18 @@ main:
   send_to_server temp hum pres
 
 print_to_lcd temp hum pres:
+  time := Time.now.local
   text := display.translate_to_rom_a_00 "T:$(%.1f temp)°C" // Need translate_to_rom to get the degree sign.
   display.lcd_write text 0 0
-  display.lcd_write "H:$(hum.to_int)%" 0 10
-  display.lcd_write "P:$(pres.to_int/100) hPa" 1 3
+  display.lcd_write "H:$(hum.to_int)%" 0 11
+  display.lcd_write "P:$(pres.to_int/100) hPa  $(%02d time.h):$(%02d time.m)" 1 0
+  
 
 send_to_server temp hum pres:
   network_interface := net.open
-  host := "your.lampurl.here"
-  socket := network_interface.tcp_connect host 80
+  socket := network_interface.tcp_connect host port
   connection := http.Connection socket host
   parameters := "Temp=$(%.1f temp)&Hum=$(%.1f hum)&Press=$(%.1f pres)"  // HTTP parameters.
   request := connection.new_request "GET" "/insert.php?$parameters"  // Create an HTTP request.
   request.send
-  print "Submitted URL ---> http://$host:80/insert.php?$parameters"
+  print "Submitted URL ---> http://$host:$port/insert.php?$parameters"
