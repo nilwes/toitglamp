@@ -10,7 +10,7 @@ import gpio
 import i2c
 import bme280 as drivers
 // Import libraries for LCD
-import .src.HD44780
+import hd44780 as display
 
 RSpin := gpio.Pin.out 13
 ENpin := gpio.Pin.out 12
@@ -19,13 +19,11 @@ D5pin := gpio.Pin.out 17
 D6pin := gpio.Pin.out 16
 D7pin := gpio.Pin.out 15
 
-sda := 21
+sda := 21 // I2C pins
 scl := 22
-cursor := 0
-blink  := 0
 
 main:
-  LCDinit "16x2" RSpin ENpin D4pin D5pin D6pin D7pin cursor blink
+  display.lcd_init RSpin ENpin D4pin D5pin D6pin D7pin 
 
   bus := i2c.Bus
     --sda=gpio.Pin.out sda
@@ -37,15 +35,20 @@ main:
   hum  := bme.read_humidity
   pres := bme.read_pressure
   print "Temperature:$(%.1f temp) °C,  Humidity:$(%.1f hum) %, Pressure: $(%.1f pres) Pa"
-  LCDwrite "T:$(%.1f temp)  |  H:$(hum.to_int)%" 0 0
-  LCDwrite "P:$(pres.to_int/100) hPa" 1 3
+
+  print_to_lcd temp hum pres
   send_to_server temp hum pres
 
+print_to_lcd temp hum pres:
+  text := display.translate_to_rom_a_00 "T:$(%.1f temp)°C" // Need translate_to_rom to get the degree sign.
+  display.lcd_write text 0 0
+  display.lcd_write "H:$(hum.to_int)%" 0 10
+  display.lcd_write "P:$(pres.to_int/100) hPa" 1 3
 
 send_to_server temp hum pres:
   network_interface := net.open
-  host := "ipadress.toyour.lampserver"
-  socket := network_interface.tcp_connect host 80
+  host := "nilsflix.ddns.net"
+  socket := network_interface.tcp_connect host 8008
   connection := http.Connection socket host
   parameters := "Temp=$(%.1f temp)&Hum=$(%.1f hum)&Press=$(%.1f pres)"  // HTTP parameters.
   request := connection.new_request "GET" "/insert.php?$parameters"  // Create an HTTP request.
