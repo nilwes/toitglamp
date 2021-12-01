@@ -47,8 +47,8 @@ print_to_lcd temp hum pres:
 
 send_to_server temp hum pres:
   network_interface := net.open
-  host := "nilsflix.ddns.net"
-  socket := network_interface.tcp_connect host 8008
+  host := "your.lampurl.here"
+  socket := network_interface.tcp_connect host 80
   connection := http.Connection socket host
   parameters := "Temp=$(%.1f temp)&Hum=$(%.1f hum)&Press=$(%.1f pres)"  // HTTP parameters.
   request := connection.new_request "GET" "/insert.php?$parameters"  // Create an HTTP request.
