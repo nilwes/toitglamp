@@ -11,10 +11,6 @@ Install the BME280 Toit driver using
 ```
 toit pkg install github.com/toitware/bme280-driver
 ```
-Install the HTTP package using
-```
-toit pkg install github.com/toitware/toit-cert-roots
-```
 Install the LCD driver package (HD44780) using
 ```
 toit pkg install github.com/nilwes/HD44780
