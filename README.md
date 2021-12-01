@@ -4,7 +4,7 @@ Toit code for sending BME280 sensor data via HTTP to a LAMP stack.
 For a full description of the project, please visit
 https://blog.toit.io/a-really-toit-glamp-server-d8edd4897f42
 
-This repository comes with a PHP script for injecting data into the MySQL database.
+This repository comes with a PHP script (insert.php) for injecting data into the MySQL database.
 
 # Requirements
 Install the BME280 Toit driver using
