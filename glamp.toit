@@ -23,8 +23,8 @@ sda := 21 // I2C pins
 scl := 22
 
 // URL and port to your LAMP server
-host := "nilsflix.ddns.net"
-port := 8008
+host := "url.toyourlampserver.here"
+port := 80
 
 main:
   display.lcd_init RSpin ENpin D4pin D5pin D6pin D7pin 
