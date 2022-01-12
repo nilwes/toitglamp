@@ -17,7 +17,7 @@ $temp  = mysqli_real_escape_string($conn, $_GET['Temp']);
 $hum   = mysqli_real_escape_string($conn, $_GET['Hum']);
 $press = mysqli_real_escape_string($conn, $_GET['Press']);
 
-$sql = mysqli_query($conn, "INSERT INTO THPData (Temp, Hum, Press) VALUES (" . $temp . "," . $hum$
+$sql = mysqli_query($conn, "INSERT INTO THPData (Temp, Hum, Press) VALUES (" . $temp . "," . $hum . "," . $press . ");");
 
 mysqli_close($conn);
 ?>
